@@ -45,15 +45,6 @@ The content pack: tracks, characters, music and more. The launcher syncs it for 
 
 <p align="center"><sub>Commits per day across NitroLauncher and Nitropack, last ten weeks. One column per day, one row per weekday. Taller and darker orange means more commits.</sub></p>
 
-## Play in three steps
-
-1. **Download** `MarioKartNitro.exe` from the [latest release](https://github.com/nitroforge/NitroLauncher/releases/latest).
-2. **Point it** to your Dolphin and your own Mario Kart Wii disc image.
-3. **Press Play.** The launcher downloads the mod the first time and updates it after that.
-
-You need Windows 10 or 11 and Dolphin with Riivolution support. We do not provide the game.
-
-## Built with
 
 <p align="center">
 <img src="assets/stack.svg" alt="Python, JavaScript, HTML5, CSS3, VS Code, Git, GitHub, Windows" width="100%" />
