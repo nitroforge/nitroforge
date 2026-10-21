@@ -1,4 +1,4 @@
-"""Builds the animated 3D commit chart (dark + light) for the profile README.
+"""Builds the still 3D commit chart (dark + light) for the profile README.
 
 Reads commits of the repos listed in REPOS from the GitHub API, groups them per day
 for the last 10 weeks and renders them with three.js in a headless Chromium.
@@ -49,7 +49,7 @@ def cells_from(counts, start):
             cells.append({"w": w, "d": d, "n": counts.get(day.isoformat(), 0), "date": day.isoformat()})
     return cells
 
-def render(cells, frames=30):
+def render(cells, frames=1):
     from playwright.sync_api import sync_playwright
     from PIL import Image
     three = HERE / "node_modules" / "three" / "build" / "three.module.js"
