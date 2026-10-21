@@ -1,0 +1,49 @@
+name: Update 3D commit chart
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "chart/**"
+      - ".github/workflows/update-3d-chart.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  chart:
+    runs-on: ubuntu-latest
+    env:
+      REPOS: nitroforge/NitroLauncher,nitroforge/Nitropack
+      # Folder that holds the README images. Use "profile/assets" if this repo is the organization's ".github" repo.
+      OUT_DIR: assets
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install tools
+        run: |
+          pip install playwright pillow
+          python -m playwright install --with-deps chromium
+          npm install --prefix chart three@0.160.0 --no-save
+      - name: Build chart
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python chart/build_chart.py
+      - name: Commit changed images
+        run: |
+          git config user.name "NitroForge"
+          git config user.email "roggerdominik59@gmail.com"
+          git add "$OUT_DIR"/pushes-dark.webp "$OUT_DIR"/pushes-light.webp
+          if git diff --cached --quiet; then
+            echo "No change"
+          else
+            git commit -m "Update chart"
+            git push
+          fi

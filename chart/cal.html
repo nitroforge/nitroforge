@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><style>*{margin:0}html,body{width:1200px;height:560px;background:transparent;overflow:hidden}canvas{position:absolute}</style></head><body>
+<canvas id="c" width="2400" height="1120" style="width:1200px;height:560px"></canvas>
+<script type="module">
+import * as THREE from './three.module.js';
+const cells=await (await fetch('cal.json')).json();
+const P=new URLSearchParams(location.search);const light=P.get('t')==='light';
+const r=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,alpha:true});r.setClearColor(0,0);r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;
+const sc=new THREE.Scene();
+const cam=new THREE.PerspectiveCamera(26,1200/560,0.1,100);
+const g=new THREE.Group();sc.add(g);
+const max=Math.max(...cells.map(c=>c.n));
+const lo=new THREE.Color(light?0xd0d7de:0x2b323b), hi=new THREE.Color(0xff6a1f), mid=new THREE.Color(0xffb347);
+cells.forEach(c=>{
+  const t=c.n/max; const h=c.n?0.12+Math.pow(t,0.8)*2.4:0.06;
+  const geo=new THREE.BoxGeometry(.82,h,.82);
+  let col=c.n? lo.clone().lerp(t>.5?mid.clone().lerp(hi,(t-.5)*2):new THREE.Color(0xff9a2e).lerp(mid,0),0).clone() : lo.clone();
+  if(c.n){col=new THREE.Color(0xffc27a).lerp(hi,Math.min(1,t*1.2));}
+  const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:col,metalness:.25,roughness:.45,emissive:c.n?col:0x000000,emissiveIntensity:c.n?.12:0}));
+  m.position.set(c.w-4.5,h/2,c.d-3);m.castShadow=true;m.receiveShadow=true;g.add(m);});
+const base=new THREE.Mesh(new THREE.BoxGeometry(10.6,.12,7.6),new THREE.MeshStandardMaterial({color:light?0xf0f3f6:0x161b22,roughness:.8}));base.position.y=-.08;base.receiveShadow=true;g.add(base);
+sc.add(new THREE.AmbientLight(0xffffff,light?1.1:.9));
+const k=new THREE.DirectionalLight(0xffffff,2.6);k.position.set(-4,9,6);k.castShadow=true;k.shadow.mapSize.set(2048,2048);k.shadow.camera.left=-9;k.shadow.camera.right=9;k.shadow.camera.top=9;k.shadow.camera.bottom=-9;sc.add(k);
+const rim=new THREE.PointLight(0xff9a2e,40,30);rim.position.set(6,3,-6);sc.add(rim);
+window.setAngle=a=>{g.rotation.y=a;cam.position.set(0,11,16);cam.lookAt(0,.4,0);r.render(sc,cam)};
+setAngle(-.25);window.__done=true;
+</script></body></html>
