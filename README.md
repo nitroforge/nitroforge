@@ -60,6 +60,3 @@ The content pack: tracks, characters, music and more. The launcher syncs it for 
 
 <br />
 
-<div align="center">
-<sub>Fan project. Not affiliated with or endorsed by Nintendo. Mario Kart and Wii are trademarks of Nintendo.</sub>
-</div>
