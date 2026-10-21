@@ -43,7 +43,7 @@ The content pack: tracks, characters, music and more. The launcher syncs it for 
 </picture>
 </p>
 
-<p align="center"><sub>Commits per day across NitroLauncher and Nitropack, last ten weeks. One column per day, one row per weekday. Taller and darker orange means more commits.</sub></p>
+<p align="center"><sub></sub></p>
 
 ## Build with
 
